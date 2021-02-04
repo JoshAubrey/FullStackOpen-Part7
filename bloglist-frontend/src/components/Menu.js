@@ -9,7 +9,7 @@ const Menu = () => {
 
     return (
       <div>
-        <Link style={padding} to='/'>home</Link>
+        <Link style={padding} to='/'>blogs</Link>
         <Link style={padding} to='/users'>users</Link>
       </div>
     )

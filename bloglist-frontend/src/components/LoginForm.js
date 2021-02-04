@@ -1,5 +1,4 @@
 import React from 'react'
-import Togglable from './Togglable'
 
 const LoginForm = ({handleLogin, username, password, setUsername, setPassword}) => {
 
@@ -24,6 +23,7 @@ const LoginForm = ({handleLogin, username, password, setUsername, setPassword}) 
                     value={password}
                     name="Password"
                     onChange={({ target }) => setPassword(target.value)}
+                    autoComplete="on"
                 />
             </div>
             <button id='login-button' type="submit">login</button>

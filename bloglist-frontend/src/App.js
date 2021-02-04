@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link, useParams, useHistory
+  Switch, Route, Redirect //Link, useParams, useHistory, useRouteMatch
 } from 'react-router-dom'
 import './App.css'
 import blogService from './services/blogs'
@@ -10,10 +10,12 @@ import loginService from './services/login'
 import Menu from './components/Menu'
 import Notification from './components/Notification'
 import BlogList from './components/BlogList'
+import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
 import UserList from './components/UserList'
+import UserDetails from './components/UserDetails'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, newBlog, likeBlog, deleteBlog } from './reducers/blogsReducer'
+import { initializeBlogs, newBlog, likeBlog, commentBlog, deleteBlog } from './reducers/blogsReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setCurrentUser, clearCurrentUser } from "./reducers/currentUserReducer"
 
@@ -21,6 +23,7 @@ const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const currentUser = useSelector(state => state.currentUser )
+  const users = useSelector(state => state.users)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -87,6 +90,17 @@ const App = () => {
     }
   }
 
+  const handleCommentBlog = (blogObject, comment) => {
+    try {
+      dispatch(commentBlog(blogObject, comment))
+      dispatch(setNotification(`Commented '${blogObject.title}'`, 5))
+    }
+    catch (error) {
+      console.log(error.response.data.error)
+      dispatch(setNotification(error.response.data.error.toString(), 5, true))
+    }
+  }
+
   const handleDeleteBlog = (id) => {
     const blog = blogs.find(b => b.id === id)
     if(window.confirm(`Delete ${blog.title} ?`)){
@@ -111,32 +125,52 @@ const App = () => {
     <Router>
       <h1>blogs</h1>
 
-      {currentUser === null ? '' : <Menu/> }
+      {currentUser ? <Menu/> : '' }
 
-      {currentUser === null ? '' : loggedIn()}
+      {currentUser ? loggedIn() : ''}
 
       <Notification/>
 
       <Switch>
-        <Route path='/users'>
-          <UserList/>
-        </Route>
-        <Route path='/'>
-          {currentUser === null ?
+        <Route path='/login'>
+          {currentUser ? 
+            <Redirect to='/'/> : 
             <LoginForm
               handleLogin={handleLogin} 
               username={username}
               password={password} 
               setUsername={setUsername}
               setPassword={setPassword}
-            /> :
+            />          
+          }
+        </Route>
+        <Route path='/users/:id'>
+          {currentUser ? <UserDetails users={users} blogs={blogs}/> : <Redirect to='/login'/> }
+        </Route>
+        <Route path='/users'>
+          {currentUser ? <UserList users={users}/> : <Redirect to='/login'/> }
+        </Route>
+        <Route path='/blogs/:id'>
+          {currentUser ? 
+          <BlogDetails 
+            blogs={blogs} 
+            currentUser={currentUser}
+            handleLikeBlog={handleLikeBlog}
+            handleCommentBlog={handleCommentBlog}
+            handleDeleteBlog={handleDeleteBlog} 
+          /> : 
+          <Redirect to='/login'/> }
+        </Route>
+        <Route path='/'>
+          {currentUser ?
             <BlogList 
               blogs={blogs} 
               currentUser={currentUser} 
               handleCreateBlog={handleCreateBlog} 
               handleLikeBlog={handleLikeBlog}
               handleDeleteBlog={handleDeleteBlog}
-            />
+            /> : 
+            <Redirect to='/login'/>
           }
         </Route>  
       </Switch>

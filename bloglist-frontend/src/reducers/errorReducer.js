@@ -2,7 +2,7 @@ const errorReducer = (state = false, action) => {
     switch (action.type) {
         case 'ERROR':
             return true
-        case 'CLEAR':
+        case 'CLEAR_ERROR':
             return false
         default:
             return state
@@ -17,7 +17,7 @@ const errorReducer = (state = false, action) => {
 
   export const clearError = () => {
     return {
-      type: 'CLEAR',
+      type: 'CLEAR_ERROR',
     }
   }
   

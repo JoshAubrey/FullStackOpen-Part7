@@ -4,7 +4,7 @@ const notificationReducer = (state = '', action) => {
     switch (action.type) {
         case 'NOTIFICATION':
             return action.notification
-        case 'CLEAR':
+        case 'CLEAR_NOTIF':
             return ''
         default:
             return state
@@ -24,7 +24,7 @@ export const setNotification = (notification, displayTime, error) => {
     timeoutID = await setTimeout(() => {
       if (error === true) dispatch(clearError())
       dispatch({
-        type: 'CLEAR'
+        type: 'CLEAR_NOTIF'
       })
     }, displayTime*1000)
   }

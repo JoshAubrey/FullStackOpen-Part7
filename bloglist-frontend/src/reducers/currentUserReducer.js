@@ -1,8 +1,8 @@
 const currentUserReducer = (state = null, action) => {
     switch (action.type) {
-        case 'USER':
+        case 'CURRENT_USER':
             return action.currentUser
-        case 'CLEAR':
+        case 'CLEAR_CURRENT_USER':
             return null
         default:
             return state
@@ -11,14 +11,14 @@ const currentUserReducer = (state = null, action) => {
 
   export const setCurrentUser = (currentUser) => {
     return {
-      type: 'USER',
+      type: 'CURRENT_USER',
       currentUser,
     }
   }
 
   export const clearCurrentUser = () => {
     return {
-      type: 'CLEAR',
+      type: 'CLEAR_CURRENT_USER',
     }
   }
   

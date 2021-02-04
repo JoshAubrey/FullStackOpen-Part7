@@ -10,15 +10,15 @@ const BlogList = ({blogs, currentUser, handleCreateBlog, handleLikeBlog, handleD
         <div>
 
             <Togglable buttonLabel='Add new' ref={blogFormRef}>
-                <BlogForm createBlog={handleCreateBlog}/>
+                <BlogForm handleCreateBlog={handleCreateBlog}/>
             </Togglable>
 
             {blogs.map(blog =>
                 <BlogListItem 
                     key={blog.id} 
                     blog={blog} 
-                    likeBlog={handleLikeBlog} 
-                    deleteBlog={handleDeleteBlog} 
+                    handleLikeBlog={handleLikeBlog} 
+                    handleDeleteBlog={handleDeleteBlog} 
                     currentUser={currentUser}
                 />
             )}

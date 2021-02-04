@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-const Blog = ({ blog, likeBlog, deleteBlog, currentUser }) => {
+const BlogListItem = ({ blog, handleLikeBlog, handleDeleteBlog, currentUser }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
 
   const hideWhenVisible = { display: detailsVisible ? 'none' : '' }
@@ -18,24 +19,27 @@ const Blog = ({ blog, likeBlog, deleteBlog, currentUser }) => {
   return (
     <div style={blogStyle} className='blog'>
       <div className='detailsHidden' style={hideWhenVisible}>
-        <a href={blog.url}>{blog.title}</a> by {blog.author} <button onClick={() => setDetailsVisible(true)}>show</button>
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> by {blog.author} <button onClick={() => setDetailsVisible(true)}>show</button>
       </div>
       <div className='detailsShown' style={showWhenVisible}>
         <div>
-          <a href={blog.url}>{blog.title}</a> by {blog.author} <button onClick={() => setDetailsVisible(false)}>hide</button>
+          {blog.title} by {blog.author} <button onClick={() => setDetailsVisible(false)}>hide</button>
         </div>
         <div>
-          Likes: <span id='likes'>{blog.likes}</span> <button onClick={() => likeBlog(blog)}>like</button>
+        <a href={blog.url}>{blog.url}</a>
+        </div>
+        <div>
+          Likes: <span id='likes'>{blog.likes}</span> <button onClick={() => handleLikeBlog(blog)}>like</button>
         </div>
         <div>
           Submitted by: {blog.user.name}
         </div>
         <div style = {showDelete}>
-          <button onClick={() => deleteBlog(blog.id)}>delete</button>
+          <button onClick={() => handleDeleteBlog(blog.id)}>delete</button>
         </div>
       </div>
     </div>
   )
 }
 
-export default Blog
+export default BlogListItem
