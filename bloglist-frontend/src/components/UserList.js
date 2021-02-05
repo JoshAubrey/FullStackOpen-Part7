@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Box from '@material-ui/core/Box';
 
 const UserList = ({users}) => {
 
     return (
-        <div>
+        <Box mt={2}>
             <table>
                 <tbody>
                 <tr>
@@ -20,7 +21,7 @@ const UserList = ({users}) => {
                 </tbody>   
             </table>
 
-        </div>
+        </Box>
     )
 }
 

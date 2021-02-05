@@ -115,19 +115,21 @@ const App = () => {
     }
   }
 
-  const loggedIn = () => (
-    <p>
-      {currentUser.name} logged-in <button onClick={handleLogout}>logout</button>
-    </p>
-  )
+  // const loggedIn = () => (
+  //   <p>
+  //     {currentUser.name} logged-in <button onClick={handleLogout}>logout</button>
+  //   </p>
+  // )
 
   return (
     <Router>
-      <h1>blogs</h1>
+      
+      {currentUser ? 
+        <Menu handleLogout={handleLogout} currentUser={currentUser}/> : 
+        '' 
+      }
 
-      {currentUser ? <Menu/> : '' }
-
-      {currentUser ? loggedIn() : ''}
+      {/* {currentUser ? loggedIn() : ''} */}
 
       <Notification/>
 
